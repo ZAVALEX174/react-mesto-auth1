@@ -1,5 +1,6 @@
 .header__auth{
     display: flex;
     align-items: center;
-    max-width: 300px;
+    max-width: 500px;
 }
+/* доделать под медиа запросы */

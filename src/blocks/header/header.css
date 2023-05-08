@@ -1,11 +1,13 @@
 .header {
   margin: 0 auto;
   padding: 0;
+  display: flex;
+  justify-content: space-between;
   padding-top: 45px;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
   padding-bottom: 39px;
 }
-
+/* доделать под медиа запросы */
 @media screen and (max-width: 899px) {
   .header {
     padding-top: 35px;
