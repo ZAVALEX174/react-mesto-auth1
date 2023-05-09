@@ -1,6 +1,20 @@
-.header__auth{
-    display: flex;
-    align-items: center;
-    max-width: 500px;
+.header__auth {
+  display: flex;
+  align-items: center;
+  max-width: 500px;
 }
 /* доделать под медиа запросы */
+/* @media screen and (max-width: 899px) {
+    .header__auth {
+      padding-top: 35px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 334px) {
+    .header__auth {
+      padding: 28px 0 27px 27px;
+      max-width: 320px;
+    }
+  } */

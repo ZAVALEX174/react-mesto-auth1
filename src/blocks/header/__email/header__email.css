@@ -1,8 +1,22 @@
 .header__email {
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
 }
 /* доделать под медиа запросы */
+/* @media screen and (max-width: 899px) {
+    .header__email {
+      padding-top: 35px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 334px) {
+    .header__email {
+      padding: 28px 0 27px 27px;
+      max-width: 320px;
+    }
+  } */

@@ -1,13 +1,27 @@
-.header__out-link{
-    margin: 0 0 0 24px;
-    padding: 0;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 22px;
-    color: #A9A9A9;
-    max-width: 56px;
-    min-height: 22px;
-    text-decoration: none;
-    vertical-align: top;
+.header__out-link {
+  margin: 0 0 0 24px;
+  padding: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #a9a9a9;
+  max-width: 56px;
+  min-height: 22px;
+  text-decoration: none;
+  vertical-align: top;
 }
 /* доделать под медиа запросы */
+/* @media screen and (max-width: 899px) {
+    .header___out-link {
+      padding-top: 35px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 334px) {
+    .header___out-link {
+      padding: 28px 0 27px 27px;
+      max-width: 320px;
+    }
+  } */
