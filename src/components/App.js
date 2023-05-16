@@ -6,10 +6,16 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { CurrentCardContext } from "../contexts/CurrentCardContext";
+import Register from "./Register";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
@@ -34,7 +40,6 @@ function App() {
       });
   }, []);
 
-
   // useEffect(() => {
   //   Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([data, card]) => {
   //     setCurrentUser(data);
@@ -43,7 +48,6 @@ function App() {
   //     console.error(err);
   //   })
   // }, [])
-
 
   function handleEditAvatarClick() {
     // document.querySelector(".popup_avatar-form").classList.add("popup_opened");
@@ -110,7 +114,6 @@ function App() {
   }
 
   useEffect(() => {
-   
     api
       .getInitialCards()
       .then((data) => {

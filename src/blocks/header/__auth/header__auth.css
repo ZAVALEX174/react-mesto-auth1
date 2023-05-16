@@ -1,5 +1,13 @@
-.header__auth{
-    display: flex;
+.header__auth {
+  /* display: flex;
     align-items: center;
-    max-width: 300px;
+    max-width: 300px; */
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.22;
+  text-align: right;
+  color: #fff;
+  text-decoration: none;
 }
