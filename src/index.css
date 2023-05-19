@@ -59,12 +59,16 @@
 @import url(./blocks/popup/__input/popup__input.css);
 @import url(./blocks/popup/_opened/popup_opened.css);
 
+@import url(./blocks/popup/__infoTooltip/popup__infoTooltip.css);
+@import url(./blocks/popup/__response-image/popup__response-image.css);
+
 @import url(./blocks/popup/__text/_text_image/popup__text_image.css);
 
 @import url(./blocks/popup/__container/_big/popup__container_big.css);
 
 @import url(./blocks/popup/_big/popup-img_big.css);
 @import url(./blocks/popup/popup-title/popup-title.css);
+@import url(./blocks/popup/popup-title/_type/popup-title_type_infoTooltip.css);
 @import url(./blocks/popup/popup_big.css);
 
 @import url(./blocks/popup/_visible/popup__error_visible.css);

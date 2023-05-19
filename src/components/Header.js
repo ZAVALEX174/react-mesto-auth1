@@ -3,10 +3,10 @@ import { Route, Link, Routes } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 
-function Header({ userEmail, signOut, openPopupBurger }) {
+function Header({ userEmail, signOut, openBurger }) {
   const [isActiveBurger, setIsActiveBurger] = useState(false);
 
-  function openPopupBurger() {
+  function openBurger() {
     setIsActiveBurger(!isActiveBurger);
   }
 
@@ -34,7 +34,13 @@ function Header({ userEmail, signOut, openPopupBurger }) {
           path="/"
           element={
             <>
-              <div className={isActiveBurger ? "header__nav header__nav_active" : "header__nav"}>
+              <div
+                className={
+                  isActiveBurger
+                    ? "header__nav header__nav_active"
+                    : "header__nav"
+                }
+              >
                 <p className="header__email">{userEmail}gbsg</p>
                 <button onClick={signOut} className="header__logout">
                   Выйти
@@ -46,7 +52,7 @@ function Header({ userEmail, signOut, openPopupBurger }) {
                     ? " header__burger_active header__burger"
                     : "header__burger"
                 }
-                onClick={openPopupBurger}
+                onClick={openBurger}
               >
                 <span className="header__burger-line"></span>
                 <span className="header__burger-line"></span>
