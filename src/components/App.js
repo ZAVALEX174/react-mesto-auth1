@@ -17,7 +17,6 @@ import Login from "./Login";
 import { ProtectedRoute } from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
 import { register, authorize, getContent } from "../utils/auth";
-import loading from "../images/0006.gif";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
@@ -45,7 +44,7 @@ function App() {
     text: "",
   });
   //email авторизированного пользователя
-  const [userEmail, setUserEmail] = useState("");
+  const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
   //-----------------------
@@ -58,7 +57,7 @@ function App() {
         localStorage.setItem("jwt", res.token);
         setLoggedIn(true);
         navigate("/", { replace: true });
-        setUserEmail(email);
+        setEmail(email);
       })
       .catch((res) => {
         if (res === "Ошибка: 401") {
@@ -103,7 +102,8 @@ function App() {
         setOpenInfoTooltip(true);
       });
   }
- // расскомитить, как разберусь с отрисовкой карточек на странице
+
+  // расскомитить, как разберусь с отрисовкой карточек на странице
   useEffect(() => {
     tokenCheck();
   }, []);
@@ -114,7 +114,7 @@ function App() {
       getContent(jwt)
         .then((res) => {
           setLoggedIn(true);
-          setUserEmail(res.data.email);
+          setEmail(res.data.email);
           navigate("/", { replace: true });
         })
         .catch((err) => {
@@ -141,27 +141,6 @@ function App() {
         });
     }
   }, [loggedIn]);
-  //--------------------
-
-  // useEffect(() => {
-  //   api
-  //     .getUserInfo()
-  //     .then((data) => {
-  //       setCurrentUser(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Ошибка сервера ${err}`);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([data, card]) => {
-  //     setCurrentUser(data);
-  //     setCards(card);
-  //   }).catch((err) => {
-  //     console.error(err);
-  //   })
-  // }, [])
 
   function handleEditAvatarClick() {
     // document.querySelector(".popup_avatar-form").classList.add("popup_opened");
@@ -226,25 +205,13 @@ function App() {
         setLoading(false);
       });
   }
-
-  // useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((data) => {
-  //       setCards(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Ошибка сервера ${err}`);
-  //     });
-  // }, []);
-
+  
   // Добавление лайков:
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-
     if (!isLiked) {
       api
         .likeCard(card._id)
@@ -304,175 +271,109 @@ function App() {
     }
   }
 
-  //==========================================
   // функция выхода
-  // function signOut() {
-  //   localStorage.removeItem("jwt");
-  //   navigate("/sign-in");
-  //   setLoggedIn(false);
-  //   setUserEmail("");
-  // }
-
   function signOut() {
     localStorage.removeItem("jwt");
     navigate("/sign-in");
     setLoggedIn(false);
-    setUserEmail("");
+    setEmail("");
   }
-  //=============================================
-
+ 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header userEmail={userEmail} signOut={signOut} />
-        <Routes>
-          <Route
-            path="/users/me"
-            element={
-              <ProtectedRoute
-                component={Main}
-                loggedIn={loggedIn}
-                onCardLike={handleCardLike}
-                onCardDelet={handleCardDelete}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onEditAvatar={handleEditAvatarClick}
-                onCardClick={setSelectedCard}
-              />
-            }
+      <CurrentCardContext.Provider value={setCards}>
+        <div className="page">
+          <Header email={email} signOut={signOut} />
+
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute
+                  component={Main}
+                  loggedIn={loggedIn}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={setSelectedCard}
+                  cards={cards}
+                />
+              }
+            />
+
+            <Route
+              path="/sign-up"
+              element={
+                <Register
+                  onRegister={handleRegister}
+                  setMessage={setMessage}
+                  setOpenInfoTooltip={setOpenInfoTooltip}
+                />
+              }
+            />
+            <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
+          </Routes>
+          <Footer />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onCloseEsc={closePopupWithEsc}
+            onCloseOverlay={closePopupWithClickOnOwerlay}
+            onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
           />
 
-          <Route
-            path="/sign-up"
-            element={
-              <Register
-                onRegister={handleRegister}
-                setMessage={setMessage}
-                setOpenInfoTooltip={setOpenInfoTooltip}
-              />
-            }
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onCloseEsc={closePopupWithEsc}
+            onCloseOverlay={closePopupWithClickOnOwerlay}
+            onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
           />
-          <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
-          <Route
-            path="/"
-            element={
-              loggedIn ? (
-                <Navigate to="/users/me" />
-              ) : (
-                <Navigate to="/sign-in" replace />
-              )
-            }
+
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onCloseEsc={closePopupWithEsc}
+            onCloseOverlay={closePopupWithClickOnOwerlay}
+            onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
           />
-        </Routes>
-        {/* {loadingBoolean ? (
-              <Routes>
-                <Route
-                  path="/sign-up"
-                  element={
-                    <Register
-                      onRegister={handleRegister}
-                      setMessage={setMessage}
-                      setOpenInfoTooltip={setOpenInfoTooltip}
-                    />
-                  }
-                />
-                <Route
-                  path="/sign-in"
-                  element={<Login onLogin={handleLogin} />}
-                />
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute
-                      component={Main}
-                      loggedIn={loggedIn}
-                      onCardLike={handleCardLike}
-                      onCardDelet={handleCardDelete}
-                      onEditProfile={handleEditProfileClick}
-                      onAddPlace={handleAddPlaceClick}
-                      onEditAvatar={handleEditAvatarClick}
-                      onCardClick={setSelectedCard}
-                    />
-                  }
-                />
-              </Routes>
-            ) : (
-              <div className="loading-data">
-                <img
-                  className="loading-data__img"
-                  src={loading}
-                  alt="анимация загрузки"
-                />
-              </div>
-            )} */}
-        {/* <Main
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={setSelectedCard}
-              onCardLike={handleCardLike}
-              cards={cards}
-              onCardDelete={handleCardDelete}
-            /> */}
-        <Footer />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onCloseEsc={closePopupWithEsc}
-          onCloseOverlay={closePopupWithClickOnOwerlay}
-          onUpdateUser={handleUpdateUser}
-          isLoading={isLoading}
-        />
-
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onCloseEsc={closePopupWithEsc}
-          onCloseOverlay={closePopupWithClickOnOwerlay}
-          onAddPlace={handleAddPlaceSubmit}
-          isLoading={isLoading}
-        />
-
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onCloseEsc={closePopupWithEsc}
-          onCloseOverlay={closePopupWithClickOnOwerlay}
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading}
-        />
-
-        {/* Подтверждение удаления карточки: */}
-        <PopupWithForm
-          title="Вы уверены?"
-          name=""
-          popup="confirm"
-          buttonText="Да"
-          onClose={closeAllPopups}
-        >
-          {/* <button
+          {/* Подтверждение удаления карточки: */}
+          <PopupWithForm
+            title="Вы уверены?"
+            name=""
+            popup="confirm"
+            buttonText="Да"
+            onClose={closeAllPopups}
+          >
+            {/* <button
             className="popup__button popup__save"
             type="submit"
             value="Да"
            >
             Да
            </button> */}
-        </PopupWithForm>
+          </PopupWithForm>
 
-        <ImagePopup
-          card={selectedCard}
-          onClose={closeAllPopups}
-          onCloseEsc={closePopupWithEsc}
-          onCloseOverlay={closePopupWithClickOnOwerlay}
-        />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+            onCloseEsc={closePopupWithEsc}
+            onCloseOverlay={closePopupWithClickOnOwerlay}
+          />
 
-        <InfoTooltip
-          isOpen={isOpenInfoTooltip}
-          onClose={closeAllPopups}
-          message={message}
-        />
-      </div>
+          <InfoTooltip
+            isOpen={isOpenInfoTooltip}
+            onClose={closeAllPopups}
+            message={message}
+          />
+        </div>
+      </CurrentCardContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

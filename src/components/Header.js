@@ -3,7 +3,7 @@ import { Route, Link, Routes, useNavigate } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 
-function Header({ userEmail, signOut, openBurger }) {
+function Header({ email, signOut, openBurger }) {
   const [isActiveBurger, setIsActiveBurger] = useState(false);
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ function Header({ userEmail, signOut, openBurger }) {
                     : "header__nav"
                 }
               >
-                <p className="header__email">{userEmail}</p>
+                <p className="header__email">{email}</p>
                 <button onClick={signOut} className="header__logout">
                   Выйти
                 </button>

@@ -19,11 +19,6 @@ function LogAndRegPopup({ name, isValid, children, onSubmit, buttonText }) {
       {children}
       {isLoading ? (
         <div className="loading-btn loading-btn_theme_black">
-          {/* <img
-            className="loading-btn__img"
-            src={imgLoading}
-            alt="анимация загрузки"
-          /> */}
         </div>
       ) : (
         <input

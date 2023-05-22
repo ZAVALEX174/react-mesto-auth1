@@ -266,7 +266,6 @@ function Register() {
             </span>
           </fieldset>
         </LogAndRegPopup>
-
         <Link to="/sign-in" className="authorization__link">
           Уже зарегистрированы? Войти
         </Link>
@@ -276,10 +275,3 @@ function Register() {
 }
 
 export default Register;
-
-//   return (
-
-//   );
-// }
-
-// export default Register;
