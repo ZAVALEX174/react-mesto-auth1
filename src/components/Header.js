@@ -1,14 +1,20 @@
 import logo from "../images/logo.svg";
-import { Route, Link, Routes } from "react-router-dom";
+import { Route, Link, Routes, useNavigate } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 
 function Header({ userEmail, signOut, openBurger }) {
   const [isActiveBurger, setIsActiveBurger] = useState(false);
+  const navigate = useNavigate();
 
   function openBurger() {
     setIsActiveBurger(!isActiveBurger);
   }
+
+  // function signOut() {
+  //   localStorage.removeItem("jwt");
+  //   navigate("/sign-in");
+  // }
 
   return (
     <header className={isActiveBurger ? "header header_type_active" : "header"}>
@@ -41,7 +47,7 @@ function Header({ userEmail, signOut, openBurger }) {
                     : "header__nav"
                 }
               >
-                <p className="header__email">{userEmail}gbsg</p>
+                <p className="header__email">{userEmail}</p>
                 <button onClick={signOut} className="header__logout">
                   Выйти
                 </button>

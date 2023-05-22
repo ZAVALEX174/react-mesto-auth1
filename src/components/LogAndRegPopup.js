@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+// import imgLoading from "../images/0006.gif";
 
 function LogAndRegPopup({ name, isValid, children, onSubmit, buttonText }) {
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   function handlerOnSubmit(e) {
-    onSubmit(e, setButtonLoading);
-    setButtonLoading(true);
+    onSubmit(e, setLoading);
+    setLoading(true);
   }
 
   return (
@@ -16,13 +17,13 @@ function LogAndRegPopup({ name, isValid, children, onSubmit, buttonText }) {
       onSubmit={handlerOnSubmit}
     >
       {children}
-      {buttonLoading ? (
+      {isLoading ? (
         <div className="loading-btn loading-btn_theme_black">
-          <img
+          {/* <img
             className="loading-btn__img"
             src={imgLoading}
             alt="анимация загрузки"
-          />
+          /> */}
         </div>
       ) : (
         <input

@@ -74,3 +74,18 @@
 @import url(./blocks/popup/_visible/popup__error_visible.css);
 @import url(./blocks/popup/_disabled/popup__button_disabled.css);
 @import url(./blocks/popup/__input/_type_error/popup__input_type_error.css);
+
+@import url(./blocks/authorization/authorization.css);
+@import url(./blocks/authorization/__button/authorization__button.css);
+@import url(./blocks/authorization/__button/_disabled/authorization__button_disabled.css);
+@import url(./blocks/authorization/__form-admin/authorization__form-admin.css);
+@import url(./blocks/authorization/__inputs/authorization__inputs.css);
+@import url(./blocks/authorization/__item/authorization__item.css);
+@import url(./blocks/authorization/__item/_type/authorization__item_type_error.css);
+@import url(./blocks/authorization/__link/authorization__link.css);
+@import url(./blocks/authorization/__text-error/authorization__text-error.css);
+@import url(./blocks/authorization/__title/authorization__title.css);
+
+@import url(./blocks/loading-btn/loading-btn.css);
+@import url(./blocks/loading-btn/__img/loading-btn__img.css);
+@import url(./blocks/loading-btn/_theme/loading-btn_theme_black.css);
