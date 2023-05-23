@@ -1,0 +1,4 @@
+.popup__animation {
+    transition: visibility 0.2s, opacity ease 0.2s;
+  }
+  

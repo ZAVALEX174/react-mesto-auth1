@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import imgLoading from "../images/0006.gif";
 
 function LogAndRegPopup({ name, isValid, children, onSubmit, buttonText }) {
   const [isLoading, setLoading] = useState(false);
@@ -11,14 +10,14 @@ function LogAndRegPopup({ name, isValid, children, onSubmit, buttonText }) {
 
   return (
     <form
-      className="authorization__form-admin"
+      className="authorization__form"
       name={name}
       noValidate
       onSubmit={handlerOnSubmit}
     >
       {children}
       {isLoading ? (
-        <div className="loading-btn loading-btn_theme_black">
+        <div className="loading-btn loading-btn__theme_dark">
         </div>
       ) : (
         <input

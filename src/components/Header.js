@@ -10,12 +10,7 @@ function Header({ email, signOut, openBurger }) {
   function openBurger() {
     setIsActiveBurger(!isActiveBurger);
   }
-
-  // function signOut() {
-  //   localStorage.removeItem("jwt");
-  //   navigate("/sign-in");
-  // }
-
+  
   return (
     <header className={isActiveBurger ? "header header_type_active" : "header"}>
       <img src={logo} alt="Логотип сайта" className="logo" />

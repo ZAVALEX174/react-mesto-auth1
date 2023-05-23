@@ -17,6 +17,7 @@ import Login from "./Login";
 import { ProtectedRoute } from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
 import { register, authorize, getContent } from "../utils/auth";
+import useFormAndValidation from "./useFormAndValidation";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
@@ -34,7 +35,7 @@ function App() {
   const [loadingBoolean, setLoadingBoolean] = useState(false);
 
   //состояние попапа ответа регистрации
-  const [isOpenInfoTooltip, setOpenInfoTooltip] = useState(false);
+  const [isOpenInfoTooltip, setOpenInfoTooltip] = React.useState(false);
 
   //состояние авторизации пользователя:
   const [loggedIn, setLoggedIn] = useState(false);
@@ -47,11 +48,11 @@ function App() {
   const [email, setEmail] = useState("");
 
   const navigate = useNavigate();
-  //-----------------------
-  function handleLogin(values, resetForm, setLoading) {
+
+  function handleLogin(formValues, resetForm, setLoading) {
     setLoadingBoolean(false);
 
-    const { password, email } = values;
+    const { password, email } = formValues;
     authorize(password, email)
       .then((res) => {
         localStorage.setItem("jwt", res.token);
@@ -80,8 +81,8 @@ function App() {
       });
   }
 
-  function handleRegister(values, resetForm, setLoading) {
-    const { password, email } = values;
+  function handleRegister(formValues, resetForm, setLoading) {
+    const { password, email } = formValues;
     register(password, email)
       .then(() => {
         setMessage({
@@ -103,7 +104,6 @@ function App() {
       });
   }
 
-  // расскомитить, как разберусь с отрисовкой карточек на странице
   useEffect(() => {
     tokenCheck();
   }, []);
@@ -205,7 +205,7 @@ function App() {
         setLoading(false);
       });
   }
-  
+
   // Добавление лайков:
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -249,12 +249,13 @@ function App() {
       });
   }
 
-  // Закрытие всез popup:
+  // Закрытие всех popup:
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setSelectedCard(null);
+    setOpenInfoTooltip(false);
   }
 
   // Закрытие по кнопке Esc:
@@ -278,101 +279,106 @@ function App() {
     setLoggedIn(false);
     setEmail("");
   }
- 
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CurrentCardContext.Provider value={setCards}>
-        <div className="page">
-          <Header email={email} signOut={signOut} />
+        <>
+          <div className="page">
+            <Header email={email} signOut={signOut} />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute
+                    component={Main}
+                    loggedIn={loggedIn}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={setSelectedCard}
+                    cards={cards}
+                  />
+                }
+              />
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute
-                  component={Main}
-                  loggedIn={loggedIn}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={setSelectedCard}
-                  cards={cards}
-                />
-              }
+              <Route
+                path="/sign-up"
+                element={
+                  <Register
+                    onRegister={handleRegister}
+                    setMessage={setMessage}
+                    setOpenInfoTooltip={setOpenInfoTooltip}
+                  />
+                }
+              />
+              <Route
+                path="/sign-in"
+                element={<Login onLogin={handleLogin} />}
+              />
+            </Routes>
+            <Footer />
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
+              onCloseEsc={closePopupWithEsc}
+              onCloseOverlay={closePopupWithClickOnOwerlay}
+              onUpdateUser={handleUpdateUser}
+              isLoading={isLoading}
             />
 
-            <Route
-              path="/sign-up"
-              element={
-                <Register
-                  onRegister={handleRegister}
-                  setMessage={setMessage}
-                  setOpenInfoTooltip={setOpenInfoTooltip}
-                />
-              }
+            <AddPlacePopup
+              isOpen={isAddPlacePopupOpen}
+              onClose={closeAllPopups}
+              onCloseEsc={closePopupWithEsc}
+              onCloseOverlay={closePopupWithClickOnOwerlay}
+              onAddPlace={handleAddPlaceSubmit}
+              isLoading={isLoading}
             />
-            <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
-          </Routes>
-          <Footer />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onCloseEsc={closePopupWithEsc}
-            onCloseOverlay={closePopupWithClickOnOwerlay}
-            onUpdateUser={handleUpdateUser}
-            isLoading={isLoading}
-          />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onCloseEsc={closePopupWithEsc}
-            onCloseOverlay={closePopupWithClickOnOwerlay}
-            onAddPlace={handleAddPlaceSubmit}
-            isLoading={isLoading}
-          />
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
+              onClose={closeAllPopups}
+              onCloseEsc={closePopupWithEsc}
+              onCloseOverlay={closePopupWithClickOnOwerlay}
+              onUpdateAvatar={handleUpdateAvatar}
+              isLoading={isLoading}
+            />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onCloseEsc={closePopupWithEsc}
-            onCloseOverlay={closePopupWithClickOnOwerlay}
-            onUpdateAvatar={handleUpdateAvatar}
-            isLoading={isLoading}
-          />
-
-          {/* Подтверждение удаления карточки: */}
-          <PopupWithForm
-            title="Вы уверены?"
-            name=""
-            popup="confirm"
-            buttonText="Да"
-            onClose={closeAllPopups}
-          >
-            {/* <button
+            {/* Подтверждение удаления карточки: */}
+            <PopupWithForm
+              title="Вы уверены?"
+              name=""
+              popup="confirm"
+              buttonText="Да"
+              onClose={closeAllPopups}
+            >
+              {/* <button
             className="popup__button popup__save"
             type="submit"
             value="Да"
            >
             Да
            </button> */}
-          </PopupWithForm>
+            </PopupWithForm>
 
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-            onCloseEsc={closePopupWithEsc}
-            onCloseOverlay={closePopupWithClickOnOwerlay}
-          />
+            <ImagePopup
+              card={selectedCard}
+              onClose={closeAllPopups}
+              onCloseEsc={closePopupWithEsc}
+              onCloseOverlay={closePopupWithClickOnOwerlay}
+            />
 
-          <InfoTooltip
-            isOpen={isOpenInfoTooltip}
-            onClose={closeAllPopups}
-            message={message}
-          />
-        </div>
+            <InfoTooltip
+              isOpen={isOpenInfoTooltip}
+              onClose={closeAllPopups}
+              message={message}
+              onCloseOverlay={closePopupWithClickOnOwerlay}
+            />
+          </div>
+        </>
       </CurrentCardContext.Provider>
     </CurrentUserContext.Provider>
   );
